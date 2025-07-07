@@ -8,4 +8,5 @@ public:
 	static void genEven(int size);
 	static void genOdd(int size);
 	static void genRand(int size);
+	static void GearData(int size);
 };
