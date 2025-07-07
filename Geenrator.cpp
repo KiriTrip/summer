@@ -3,6 +3,7 @@
 #include <vector>
 #include <random>
 #include <fstream>
+#include <cstdlib>
 
 void Generator::genLinear(int size) {
 	std::vector<int> arr(size);
@@ -64,6 +65,45 @@ void Generator::genRand(int size) {
 	for (int i = 0; i < arr.size(); ++i) {
 		arr[i] = distr(generator);
 		out << arr[i] << "\n";
+	}
+	out.close();
+}
+
+void Generator::GearData(int size) {
+	int cnt = 0;
+	std::ofstream out;
+	out.open("C:\\Users\\Student\\Desktop\\genOdd.txt");
+
+	for (int i = 0; i < size; ++i)
+	{
+		if (size > 100)
+		{
+			if (cnt < 25) {
+				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
+				out << arg << std::endl;
+				cnt++;
+			}
+			if (cnt >= 25) {
+				int arg = (i * 2 + std::rand() % ((i + 1) * 2 - 10));
+				out << arg << std::endl;
+				cnt++;
+			}
+			if (cnt > 50) { cnt = 0; }
+		}
+		
+		if (size < 100) 
+		{
+			if (i % 2 == 0) {
+				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
+				out << arg << std::endl;
+				cnt++;
+			}
+			if (i % 2 != 0) {
+				int arg = ( i * 2 + std::rand() % ((i + 1) * 2 - 10));
+				out << arg << std::endl;
+				cnt++;
+			}
+		}
 	}
 	out.close();
 }
