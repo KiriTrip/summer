@@ -110,3 +110,26 @@ void Generator::GearData(int size) {
 	}
 	out.close();
 }
+
+
+
+void printTree(NodeInt* node, int depth = 0) {
+    if (!node) return;
+
+    // Отступы
+    for (int i = 0; i < depth; ++i)
+        std::cout << "  ";
+
+    // Вывод ключей
+    std::cout << "[";
+    for (size_t i = 0; i < node->keys.size(); ++i) {
+        std::cout << node->keys[i];
+        if (i + 1 < node->keys.size()) std::cout << ", ";
+    }
+    std::cout << "]" << std::endl;
+
+    // Рекурсивно выводим детей
+    for (NodeInt* child : node->child) {
+        printTree(child, depth + 1);
+    }
+}
