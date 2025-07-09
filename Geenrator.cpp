@@ -112,28 +112,3 @@ void Generator::GearData(int size) {
 }
 
 
-
-void TreeInt::print(NodeInt* node, const std::string& prefix, bool isLast) {
-    std::cout << prefix;
-
-    // └── или ├──
-    std::cout << (isLast ? "└── " : "├── ");
-
-    // Печать ключей
-    std::cout << "[";
-    for (size_t i = 0; i < node->keys.size(); ++i) {
-        std::cout << node->keys[i];
-        if (i + 1 != node->keys.size()) std::cout << ", ";
-    }
-    std::cout << "]" << std::endl;
-
-    // Переход к детям
-    for (size_t i = 0; i < node->child.size(); ++i) {
-        bool lastChild = (i == node->child.size() - 1);
-        print(node->child[i], prefix + (isLast ? "    " : "│   "), lastChild);
-    }
-}
-
-void TreeInt::print() {
-    print(root, "", true);
-}
