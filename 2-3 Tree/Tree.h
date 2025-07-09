@@ -37,6 +37,9 @@ public:
     void insert(int key);
     int height();
     void print();
+    static void genLinear(int size);
+    static void genRand(int size);
+    static void GearData(int size);
 
 };
 
