@@ -1,21 +1,62 @@
-﻿#include "AvlTree.hpp"
+#include "AvlTree.hpp"
 #include "Generator.hpp"
+#include <chrono>
+#include <ctime>
 #include <iostream>
-#include <vector>
 
-int main()
-{
-    AvlTree testTree;
-    std::vector<int> arr(10);
+void GearData(int size) {
+	int cnt = 0;
+	//std::ofstream out;
+	//out.open("C:\\Users\\Student\\Desktop\\genOdd.txt");
+	AvlTree testTree;
 
-    // Generator::genEven(arr.size());
+	for (int i = 0; i < size; ++i)
+	{
+		if (size >= 100)
+		{
+			if (cnt < 25) {
+				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
+				testTree.insRec(i);
+				//out << arg << std::endl;
+				cnt++;
 
-    for (int i = 0; i < 1e7; ++i) {
+			}
+			if (cnt >= 25) {
+				int arg = (i * 2 + std::rand() % ((i + 1) * 2 - 10));
+				testTree.insRec(i);
+				//out << arg << std::endl;
+				cnt++;
+			}
+			if (cnt > 50) { cnt = 0; }
+		}
+
+		if (size < 100)
+		{
+			if (i % 2 == 0) {
+				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
+				testTree.insRec(i);
+				//out << arg << std::endl;
+				cnt++;
+			}
+			if (i % 2 != 0) {
+				int arg = (i * 2 + std::rand() % ((i + 1) * 2 - 10));
+				testTree.insRec(i);
+
+				//out << arg << std::endl;
+				cnt++;
+			}
+		}
+	}
+	std::cout << testTree.rootHeight();
+	//out.close();
+}
+
+int main() {
+	
+	AvlTree tTree;
+	GearData(1000000000);
+	
 
 
-        testTree.insRec(i);
-        if (i % 10000 == 0) {
-            std::cout << testTree.rootHeight() << "\n";
-        }
-    }
+	return 0;
 }
