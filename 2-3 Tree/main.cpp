@@ -1,53 +1,19 @@
-#include <iostream>
-#include "Tree.h"
+#include <pybind11/pybind11.h>  // Главный заголовок pybind11
+#include <pybind11/stl.h>
+#include "Tree.h"             // Наш класс
 
-int main() {
-	TreeInt Int;
+namespace py = pybind11;  // Упрощаем запись
 
-	int size, elem, cnt = 0;
-	std::cin >> size >> elem;
-	//std::cout << sizeof(int);
+PYBIND11_MODULE(tree_module, m) {
+    // Делаем класс Tree доступным в Python
+    py::class_<TreeInt>(m, "TreeInt")
+        .def(py::init<>())      
+        .def("insert", &TreeInt::insert)   
+        .def("print", &TreeInt::print)
+        .def("height", &TreeInt::height)   
+        .def("search", &TreeInt::search)
+        .def("genLinear", &TreeInt::genLinear)   
+        .def("genRand", &TreeInt::genRand)
+        .def("GearData", &TreeInt::GearData);
 
-	
-	for (int i = 0; i < size; ++i)
-	{
-		if (size > 100)
-		{
-			if (cnt < 25) {
-				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
-				Int.insert(arg);
-				cnt++;
-			}
-			if (cnt >= 25) {
-				int arg = (i * 2 + std::rand() % ((i + 1) * 2 - 10));
-				Int.insert(arg);
-				cnt++;
-			}
-			if (cnt > 50) { cnt = 0; }
-		}
-
-		if (size < 100)
-		{
-			if (i % 2 == 0) {
-				int arg = (0 + std::rand() % ((i + 1) * 2 - 0));
-				Int.insert(arg);
-				cnt++;
-			}
-			if (i % 2 != 0) {
-				int arg = (i * 2 + std::rand() % ((i + 1) * 2 - 10));
-				Int.insert(arg);
-				cnt++;
-			}
-		}
-	}
-
-	//Int.print();
-	
-	//if (Int.search(elem)) std::cout << "YES" << std::endl;
-	
-	//else std::cout << "NO" << std::endl;
-
-	std::cout << Int.height();
-
-	return 0;
 }
