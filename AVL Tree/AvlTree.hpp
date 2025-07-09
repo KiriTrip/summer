@@ -28,7 +28,6 @@ public:
 	int select(int index);
 
 	bool remove(int value);
-
 private:
 
 	Node* root;
@@ -38,6 +37,9 @@ private:
 	void updateHeight(Node* node);
 	int bal_factor(Node* node);
 	int search(int index, Node* node);
+
+	Node* fMin(Node* node);
+	Node* rmMin(Node* node);
 
 	Node* rebalance(Node* node);
 	Node* leftRotate(Node* node);
