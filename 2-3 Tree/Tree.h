@@ -14,7 +14,7 @@ public:
 
     NodeInt(bool leaf);
     ~NodeInt();
-    
+
 
 };
 
@@ -25,14 +25,17 @@ public:
 class TreeInt {
 private:
     NodeInt* root;
-    NodeInt* insert(NodeInt* node, int key, int &promotedKey, NodeInt* &NewChild);
+    NodeInt* insert(NodeInt* node, int key, int& promotedKey, NodeInt*& NewChild);
     void print(NodeInt* node, const std::string& prefix, bool isLast);
 
 public:
     TreeInt();
     ~TreeInt();
 
+
+    bool search(int x);
     void insert(int key);
+    int height();
     void print();
 
 };
