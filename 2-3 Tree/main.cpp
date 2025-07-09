@@ -41,11 +41,11 @@ int main() {
 		}
 	}
 
-	Int.print();
+	//Int.print();
 	
-	if (Int.search(elem)) std::cout << "YES" << std::endl;
+	//if (Int.search(elem)) std::cout << "YES" << std::endl;
 	
-	else std::cout << "NO" << std::endl;
+	//else std::cout << "NO" << std::endl;
 
 	std::cout << Int.height();
 
