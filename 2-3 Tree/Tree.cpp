@@ -1,4 +1,4 @@
-﻿#include "Tree.h"
+#include "Tree.h"
 #include <limits>
 #include <iostream>
 #include <algorithm>
@@ -60,8 +60,8 @@ void TreeInt::insert(int key)
 		int promotedkey = 0;
 		NodeInt* newChild = nullptr;
 		NodeInt* newroot = insert(root, key, promotedkey, newChild);
-		
-		if(newroot) {
+
+		if (newroot) {
 			NodeInt* newInt = new NodeInt(false);
 			newInt->keys.push_back(promotedkey);
 			newInt->child.push_back(root);
@@ -80,7 +80,10 @@ NodeInt* TreeInt::insert(NodeInt* node, int key, int& promotedKey, NodeInt*& New
 	if (node->is_leaf)
 	{
 		node->keys.push_back(key);
+
 		std::sort(node->keys.begin(), node->keys.end());
+		auto last = std::unique(node->keys.begin(), node->keys.end());
+		node->keys.erase(last, node->keys.end());
 
 		if (node->keys.size() <= 2) { return nullptr; }
 
@@ -89,13 +92,13 @@ NodeInt* TreeInt::insert(NodeInt* node, int key, int& promotedKey, NodeInt*& New
 
 		tree->keys.push_back(node->keys[2]);
 		node->keys.erase(node->keys.begin() + 1, node->keys.end());
-		
+
 		NewChild = tree;
 		return node;
 
 	}
 	int i = 0;
-	for (; i < node->keys.size() && key > node->keys[i]; ++i) { ;  }
+	for (; i < node->keys.size() && key > node->keys[i]; ++i) { ; }
 
 	int innerPromotedKey = 0;
 	NodeInt* split = nullptr;
@@ -106,7 +109,7 @@ NodeInt* TreeInt::insert(NodeInt* node, int key, int& promotedKey, NodeInt*& New
 
 	node->keys.insert(node->keys.begin() + i, innerPromotedKey);
 	node->child.insert(node->child.begin() + i + 1, split);
-	
+
 
 	if (node->keys.size() <= 2) { return nullptr; }
 
@@ -117,7 +120,7 @@ NodeInt* TreeInt::insert(NodeInt* node, int key, int& promotedKey, NodeInt*& New
 	tree->keys.push_back(node->keys[2]);
 	tree->child.push_back(node->child[2]);
 	tree->child.push_back(node->child[3]);
-	
+
 	node->keys.erase(node->keys.begin() + 1, node->keys.end());
 	node->child.erase(node->child.begin() + 2, node->child.end());
 
@@ -126,16 +129,41 @@ NodeInt* TreeInt::insert(NodeInt* node, int key, int& promotedKey, NodeInt*& New
 
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+bool TreeInt::search(int x)
+{
+	NodeInt* curr = root;
+
+	while (curr) {
+		for (int k : curr->keys) {
+			if (x == k) { return true; }
+		}
+		
+		if (curr->is_leaf) { return false; }
+
+		int i = 0;
+		for (; i < curr->keys.size() && x > curr->keys[i]; i++) { ; }
+
+		curr = curr->child[i];
+	}
+	return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 void TreeInt::print(NodeInt* node, const std::string& prefix, bool isLast) {
 	SetConsoleCP(CP_UTF8);
-	
+
 	std::locale::global(std::locale("en_US.UTF-8"));
 	std::cout.imbue(std::locale());
-	
-	
+
+
 	std::cout << prefix;
 
 	// └── или ├──
@@ -155,11 +183,34 @@ void TreeInt::print(NodeInt* node, const std::string& prefix, bool isLast) {
 		print(node->child[i], prefix + (isLast ? "    " : "│   "), lastChild);
 	}
 
-	
+
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+int TreeInt::height()
+{
+	NodeInt* curr = root;
+	int hei = 0;
+
+	while (curr && !curr->is_leaf) {
+			++hei;
+			curr = curr->child[0];
+		}
+
+		return hei;
+	}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void TreeInt::print() {
 	print(root, "", true);
 	std::cout << std::endl;
 }
+
 
