@@ -74,24 +74,29 @@ int position;
 
 int AvlTree::search(int index, Node* node) {
 	int buf;
-	if (node->l != nullptr) {
-		if ((buf = search(index, node->l)) != std::numeric_limits<int>::max()) {
-			return buf;
+	if (node->value > index) {
+		if (node->l != nullptr) {
+			if ((buf = search(index, node->l)) != std::numeric_limits<int>::max()) {
+				return buf;
+			}
 		}
+
 	}
-	if (position == index) {
+	if (node->value == index) {
 		return node->value;
 	}
-	position += 1;
-	if (node->r != nullptr) {
-		if ((buf = search(index, node->r)) != std::numeric_limits<int>::max()) {
-			return buf;
-		}
+	if (node->value < index) {
+		if (node->r != nullptr) {
+			if ((buf = search(index, node->r)) != std::numeric_limits<int>::max()) {
+				return buf;
+			}
+		}	
+
 	}
 }
 
 int AvlTree::select(int index) {
-	position = 0;	
+	position = 0;
 	if (root == nullptr) {
 		return std::numeric_limits<int>::max();
 	}
@@ -130,16 +135,73 @@ int AvlTree::bal_factor(Node* node) {
 	return (getHeight(node->l) - getHeight(node->r));
 }
 
+Node* AvlTree::fMin(Node* node) {
+	
+
+	return node->l ? fMin(node->l) : node;
+	
+}
+
+Node* AvlTree::rmMin(Node* node) {
+	if (node->l == 0) {
+		return node->r;
+	}
+	node->l = rmMin(node->l);
+	return rebalance(node);
+}
+
 bool AvlTree::remove(int value) {
+	Node* c_node = root, * parent = nullptr;
 	bool is_found = false, is_deleted = false;
-	Node* c_node = root, *parent = nullptr, *buffer;
 
 	if (root == nullptr) {
 		return false;
 	}
 
-
-
+	while (!is_found && c_node != nullptr) {
+		if (value < c_node->value) {
+			parent = c_node;
+			c_node = c_node->l;
+		}
+		else if (value > c_node->value) {
+			parent = c_node;
+			c_node = c_node->r;
+		}
+		else {
+			is_found = true;
+			while (!is_deleted) {
+				if (c_node->l != nullptr) {
+					c_node->value = c_node->l->value;
+					parent = c_node;
+					c_node = c_node->l;
+					//updateHeight(c_node);
+				}
+				else if (c_node -> r != nullptr) {
+					c_node->value = c_node->r->value;
+					parent = c_node;
+					c_node = c_node->r;
+					//updateHeight(c_node);
+				}
+				else {
+					if (parent->r == c_node) {
+						parent->r = nullptr;
+					}
+					else if (parent->l == c_node) {
+						parent->l = nullptr;
+					}
+					updateHeight(parent);
+					delete c_node;
+					is_deleted = true;
+				}
+			}
+			size--;
+			updateHeight(root);
+			rebalance(root);
+			return true;
+		}
+	}
+	return false;
+	
 }
 
 Node* AvlTree::rebalance(Node* node) {
@@ -152,7 +214,7 @@ Node* AvlTree::rebalance(Node* node) {
 	}
 	if (bal_res == -2) {
 		if (bal_factor(node->r) > 0) {
-			node->r = rigthRotate(node -> l);
+			node->r = rigthRotate(node->l);
 		}
 		return leftRotate(node);
 	}
