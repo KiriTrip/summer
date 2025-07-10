@@ -1,0 +1,65 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+#sharpAvl_ex = pd.read_csv('/content/sample_data/sharpAvl_ex.txt', header=None)
+sharpAvlH_ex = pd.read_csv('/content/sample_data/sharpAvlH_ex.txt', header=None)
+#sharpSet_ex = pd.read_csv('/content/sample_data/sharpSet_ex.txt', header=None)
+#rmLinAvl_ex = pd.read_csv('/content/sample_data/rmLinAvl_ex.txt', header=None)
+#rmLinSet_ex = pd.read_csv('/content/sample_data/rmLinSet_ex.txt', header=None)
+# searchLin2_3M_ex = pd.read_csv('/content/sample_data/searchLin2-3M_ex.txt', header=None)
+# searchLin2_3_ex = pd.read_csv('/content/sample_data/searchLin2-3_ex.txt', header=None)
+# searchLinSet2_3M_ex = pd.read_csv('/content/sample_data/searchLinSet2-3M_ex.txt', header=None)
+# searchLinSet2_3_ex = pd.read_csv('/content/sample_data/searchLinSet2-3_ex.txt', header=None)
+#sharp2_3H_ex = pd.read_csv('/content/sample_data/sharp2-3H_ex.txt', header=None)
+#sharp2_3M_ex = pd.read_csv('/content/sample_data/sharp2-3M_ex.txt', header=None)
+#sharp2_3_ex = pd.read_csv('/content/sample_data/sharp2-3_ex.txt', header=None)
+#sharpAvlM_ex = pd.read_csv('/content/sample_data/sharpAvlM_ex.txt', header=None)
+#sharpSet2_3_ex = pd.read_csv('/content/sample_data/sharpSet2-3_ex.txt', header=None)
+#sharpSetM_ex = pd.read_csv('/content/sample_data/sharpSetM_ex.txt', header=None)
+
+n = len(sharpAvlH_ex)
+sharpAvlH_ex = sharpAvlH_ex[0][:-1].transpose()
+
+
+df = pd.DataFrame({
+    'Insertion_Step': range(1, n ),
+    'Tree_Height': sharpAvlH_ex,
+})
+
+df['Ideal_Height'] = np.log2(df['Insertion_Step'])
+df['UpperBound_Height'] = 1.2 * np.log2(df['Insertion_Step'])
+
+plt.plot(df['Insertion_Step'], df['Tree_Height'],
+         linestyle='-',
+         linewidth=1.5,
+         color='royalblue',
+         label='Высота Avl Дерева')
+
+plt.plot(df['Insertion_Step'], df['Ideal_Height'],
+         linestyle='--',
+         linewidth=1.8,
+         color='seagreen',
+         label='Высота идеального дерева (log₂(n))')
+
+plt.plot(df['Insertion_Step'], df['UpperBound_Height'],
+         linestyle='--',
+         linewidth=1.8,
+         color='crimson',
+         label='Оценка верхней границы высоты (0.8×log₂(n))')
+
+
+#plt.plot(sharp2_3_ex, color='seagreen',linestyle = '-', label='2-3')
+#plt.plot(sharpSet2_3_ex, color='crimson', linestyle='--', label='Set')
+
+plt.title('Сравнение фактической и теоретической высоты дерева', fontsize=14)
+plt.xlabel('Кол-во элементов -- 10^7', fontsize=12)
+plt.ylabel('Высота', fontsize=12)
+plt.legend(loc='lower right', fontsize=12)
+plt.grid(alpha=0.25)
+
+#plt.xlim(0, 10000000)
+#plt.ylim(0, )
+
+plt.tight_layout()
+plt.show()
